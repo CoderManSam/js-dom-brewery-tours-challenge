@@ -8,9 +8,7 @@ const state = {
     types: ["micro", "regional", "brewpub"],
     usState: '',
     breweries: [],
-    microBreweries: [],
-    regionalBreweries: [],
-    brewpubBreweries: []
+    filteredBreweries: []
 }
 
 
@@ -56,7 +54,11 @@ stateForm.addEventListener("submit", (event) => {
 
 filterForm.addEventListener("change", (event) => {
 
-    selectBreweryFilterAndRender(event.target.value)
+    filter(event.target.value)
+
+    renderFilteredBreweries()
+
+    breweryListH1.innerText = "List of Breweries" + " (" + state.usState + " - " + `${event.target.value}` + " breweries)"
 })
 
 
@@ -119,126 +121,17 @@ const renderBreweries = () => {
     render(state.breweries)
 }
 
-const renderMicroBreweries = () => {
+const renderFilteredBreweries = () => {
 
-    render(state.microBreweries)
-
-    breweryListH1.innerText = "List of Breweries" + " (" + state.usState + " - Micro Breweries)"
-}
-
-const renderRegionalBreweries = () => {
-
-    render(state.regionalBreweries)
-
-    breweryListH1.innerText = "List of Breweries" + " (" + state.usState + " - Regional Breweries)"
-}
-
-const renderBrewpubBreweries = () => {
-
-    render(state.brewpubBreweries)
-
-    breweryListH1.innerText = "List of Breweries" + " (" + state.usState + " - Brewpub Breweries)"
+    render(state.filteredBreweries)
 }
 
 
 // BREWERY FILTERS
-const filter = (filterBy, filteredBreweryArray) => {
+const filter = (filterBy) => {
 
-    let filteredArray = state.breweries.filter((brewery) => brewery.brewery_type === filterBy)
-
-    filteredArray.forEach((brewery) => {
-        filteredBreweryArray.push(brewery)
-    })
-}
-
-const filterMicroBreweries = () => {
-
-    filter("micro", state.microBreweries)
-}
-
-const filterRegionalBreweries = () => {
-
-    filter("regional", state.regionalBreweries)
-}
-
-const filterBrewpubBreweries = () => {
-
-    filter("brewpub", state.brewpubBreweries)
-}
-
-
-const selectBreweryFilterAndRender = (breweryType) => {
-
-    console.log("brewery type is ", breweryType)
-
-    if(breweryType === "micro") {
-
-        filterMicroBreweries()
-
-        renderMicroBreweries()
-    }
-
-    if(breweryType === "regional") {
-
-        filterRegionalBreweries()
-
-        renderRegionalBreweries()
-    }
-
-    if(breweryType === "brewpub") {
-
-        filterBrewpubBreweries()
-
-        renderBrewpubBreweries()
-    }
-
-    else console.log("error brewery type cannot be found for filter and render function")
+    state.filteredBreweries = state.breweries.filter((brewery) => brewery.brewery_type === filterBy)
 }
 
 
 console.log("state is ", state)
-
-
-// MY INITIAL IDEA FOR THE FILTER BY DROPDOWN THAT WASNT FEASIBLE
-// filterForm.addEventListener("change", (event) => {
-//     console.log("event is ", event, "event target value is ", event.target.value)
-
-//     filter${event.target.value}Breweries()
-// })
-
-// const filter = (filterType, filterBy, filteredBreweryArray) => {
-
-//     filteredBreweryArray = state.breweries.filter((brewery) => filterType === filterBy)
-// }
-
-// const filterMicroBreweries = () => {
-
-//     filter(brewery.brewery_type, "micro", state.microBreweries)
-// }
-
-
-// TEACHER PROVIDED EXAMPLE OF DIRECTION COULD TAKE WITH FILTER BY DROPDOWN
-// let state = {
-//     ...,
-//     breweryTypeFilters: ['micro', etc...]
-//   }
-  
-//   // event listener to detect a check box change for type filter
-//   checkbox.addEventListener(... {
-//     if(checkbox is checked) // push this checkbox brewery type to breweryTypeFilters
-//     else // remove brewery type from brewery type filters
-//     // call
-//     renderBreweries(filteredBreweries())
-//   })
-  
-//   function filteredBreweries() {
-//     const filtered = state.breweries.filter(..., {
-//       return true if brewery matches any of the state.breweryTypeFilters
-//     }) 
-//     return filtered
-//   }
-  
-//   renderBreweries(breweriesToRender) {
-//     // clear list
-//     // for each brewery to render -> render brewery
-//   }
