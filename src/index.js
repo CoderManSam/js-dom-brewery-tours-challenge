@@ -1,5 +1,6 @@
 const stateForm = document.querySelector('#select-state-form')
 const filterForm = document.querySelector('#filter-by-type')
+const addTypeForm = document.querySelector('#add-type-form')
 const breweryList =  document.querySelector('#breweries-list')
 const breweryListH1 = document.querySelector('h1')
 const apiURL = "https://api.openbrewerydb.org/breweries"
@@ -59,6 +60,25 @@ filterForm.addEventListener("change", (event) => {
     renderFilteredBreweries()
 
     breweryListH1.innerText = "List of Breweries" + " (" + state.usState + " - " + `${event.target.value}` + " breweries)"
+})
+
+addTypeForm.addEventListener("submit", (event) => {
+
+    event.preventDefault()
+    breweryList.innerHTML = ''
+    breweryListH1.innerText = "List of Breweries"
+
+    const addTypeEntry = event.target[0].value
+
+    state.types.push(addTypeEntry)
+
+    const newTypeOfBreweryFilter = document.createElement('option')
+    newTypeOfBreweryFilter.value = `${event.target[0].value}`
+    newTypeOfBreweryFilter.innerText = `${event.target[0].value}`
+
+    filterForm.append(newTypeOfBreweryFilter)
+
+    addTypeForm.reset()
 })
 
 
